@@ -1,0 +1,29 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'abbott-demand-intake-system-copilotkit-chat-bot-app'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5A6CF451DCDB4438B82CB1F26354ACCB }}
